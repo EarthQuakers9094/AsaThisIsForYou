@@ -5,7 +5,11 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.Constants.DrivebaseConstants.DriveMode;
+import frc.robot.commands.ArcadeDrive;
+import frc.robot.subsystems.DrivebaseSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -17,11 +21,14 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  
+  DrivebaseSubsystem drivebaseSubsystem = new DrivebaseSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController =
+  private final CommandXboxController driveController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
+
+  private final CommandXboxController operatorController = 
+      new CommandXboxController(OperatorConstants.kOperatorControllerPort); 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -32,7 +39,16 @@ public class RobotContainer {
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
+    //Command Style #1: Calling the ArcadeDrive command class in commands folder 
+    drivebaseSubsystem.setDefaultCommand(
+      new ArcadeDrive(drivebaseSubsystem, () -> driveController.getLeftY(), () -> driveController.getLeftX()));
 
+    //Command Style #2 creating an inline Command in robot container 
+    driveController.x().toggleOnTrue(Commands.runOnce(() -> drivebaseSubsystem.setDriveMode(DriveMode.SLOW)));
+
+    //Command Style #3: Using Command methods from subsystem 
+    driveController.a().toggleOnTrue(drivebaseSubsystem.setDriveModeCommand(DriveMode.FAST));
+    driveController.b().toggleOnTrue(drivebaseSubsystem.setDriveModeCommand(DriveMode.NORMAL));
     
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,

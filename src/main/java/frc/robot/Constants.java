@@ -13,20 +13,51 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  
   public static class OperatorConstants {
+    private OperatorConstants() {}
+    
     public static final int kDriverControllerPort = 0;
+    public static final int kOperatorControllerPort = 0; 
+  
   }
 
-  public static class DrivebaseConstants {
+  public final class DrivebaseConstants {
+    private DrivebaseConstants() {} 
+
     public static final int LeftLeadSparkID = 0;
     public static final int LeftFollowSparkID = 1;
     public static final int RightLeadSparkID = 2;
     public static final int RightFollowSparkID = 3;
 
+    public enum DriveMode{
+      FAST(1.0),
+      NORMAL(0.7),
+      SLOW(0.4);
+
+      private final double scale; 
+
+      DriveMode(double scale){
+        this.scale = scale; 
+      }
+
+      public double getScale(){
+        return this.scale; 
+      }
+
+    }
+
   }
 
-  public static class SpinnerConstants {
+  public final class SpinnerConstants {
+    private SpinnerConstants() {} 
+    
     public static final int SpinnerMotorID = 4;
+
+    public static final double kP = 0.005;
+    public static final double kI = 0.005;
+    public static final double kD = 0.005;
+
 
   }
 }

@@ -15,8 +15,12 @@ public class ArcadeDrive extends Command {
   DoubleSupplier forwardSpeed;
   DoubleSupplier turnSpeed; 
 
-  public ArcadeDrive() {
+  public ArcadeDrive(DrivebaseSubsystem drivebase, DoubleSupplier forwardSpeed, DoubleSupplier turnSpeed) {
     // Use addRequirements() here to declare subsystem dependencies.
+    this.drivebase = drivebase;
+    this.forwardSpeed = forwardSpeed;
+    this.turnSpeed = turnSpeed;
+    addRequirements(drivebase);
   }
 
   // Called when the command is initially scheduled.
@@ -25,7 +29,9 @@ public class ArcadeDrive extends Command {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    drivebase.arcadeDrive(forwardSpeed.getAsDouble(), turnSpeed.getAsDouble());
+  }
 
   // Called once the command ends or is interrupted.
   @Override
