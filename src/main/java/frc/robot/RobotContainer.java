@@ -7,7 +7,9 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.DrivebaseConstants.DriveMode;
 import frc.robot.commands.ArcadeDrive;
+import frc.robot.commands.SpinCommand;
 import frc.robot.subsystems.DrivebaseSubsystem;
+import frc.robot.subsystems.SpinnerSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -22,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   DrivebaseSubsystem drivebaseSubsystem = new DrivebaseSubsystem();
+  SpinnerSubsystem spinnerSubsystem = new SpinnerSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController driveController =
@@ -37,7 +40,6 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
     //Command Style #1: Calling the ArcadeDrive command class in commands folder 
     drivebaseSubsystem.setDefaultCommand(
@@ -49,11 +51,15 @@ public class RobotContainer {
     //Command Style #3: Using Command methods from subsystem 
     driveController.a().toggleOnTrue(drivebaseSubsystem.setDriveModeCommand(DriveMode.FAST));
     driveController.b().toggleOnTrue(drivebaseSubsystem.setDriveModeCommand(DriveMode.NORMAL));
+
+
+    operatorController.a().onTrue(new SpinCommand(spinnerSubsystem, 0.5));
+    operatorController.b().onTrue(new SpinCommand(spinnerSubsystem, 1));
+
+    operatorController.leftTrigger().onTrue(Commands.runOnce(() -> spinnerSubsystem.toggleDirection()));
     
 
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-    
+
   }
 
   /**
