@@ -107,7 +107,8 @@ public class DrivebaseSubsystem extends SubsystemBase {
 
   //Command Style #2: Command method to be called in RobotContainer 
   public Command setDriveModeCommand(DriveMode driveMode){
-    return Commands.runOnce(() -> currentMode = driveMode, this); 
+    return Commands.runOnce(() -> currentMode = driveMode);   
+    //adding ( ..... , this) makes Drivebase a requirement & will stop normal arcadeDrive 
   }
 
   public void stopDrive(){

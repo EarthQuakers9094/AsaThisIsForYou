@@ -13,7 +13,7 @@ import frc.robot.subsystems.SpinnerSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -46,15 +46,16 @@ public class RobotContainer {
       new ArcadeDrive(drivebaseSubsystem, () -> driveController.getLeftY(), () -> driveController.getLeftX()));
 
     //Command Style #2 creating an inline Command in robot container 
-    driveController.x().toggleOnTrue(Commands.runOnce(() -> drivebaseSubsystem.setDriveMode(DriveMode.SLOW)));
+    driveController.x().onTrue(Commands.runOnce(() -> drivebaseSubsystem.setDriveMode(DriveMode.SLOW)));
 
     //Command Style #3: Using Command methods from subsystem 
-    driveController.a().toggleOnTrue(drivebaseSubsystem.setDriveModeCommand(DriveMode.FAST));
-    driveController.b().toggleOnTrue(drivebaseSubsystem.setDriveModeCommand(DriveMode.NORMAL));
+    driveController.a().onTrue(drivebaseSubsystem.setDriveModeCommand(DriveMode.FAST));
+    driveController.b().onTrue(drivebaseSubsystem.setDriveModeCommand(DriveMode.NORMAL));
 
 
-    operatorController.a().onTrue(new SpinCommand(spinnerSubsystem, 0.5));
-    operatorController.b().onTrue(new SpinCommand(spinnerSubsystem, 1));
+    //Operator controls
+    operatorController.a().whileTrue(new SpinCommand(spinnerSubsystem, 0.5));
+    operatorController.b().whileTrue(new SpinCommand(spinnerSubsystem, 1));
 
     operatorController.leftTrigger().onTrue(Commands.runOnce(() -> spinnerSubsystem.toggleDirection()));
     
