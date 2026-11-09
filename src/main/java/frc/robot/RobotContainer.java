@@ -48,7 +48,7 @@ public class RobotContainer {
     //Command Style #2 creating an inline Command in robot container 
     driveController.x().onTrue(Commands.runOnce(() -> drivebaseSubsystem.setDriveMode(DriveMode.SLOW)));
 
-    //Command Style #3: Using Command methods from subsystem 
+    //Command Style #3: Using Command factory methods from subsystem 
     driveController.a().onTrue(drivebaseSubsystem.setDriveModeCommand(DriveMode.FAST));
     driveController.b().onTrue(drivebaseSubsystem.setDriveModeCommand(DriveMode.NORMAL));
 
